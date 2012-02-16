@@ -302,8 +302,13 @@ class ShowOffUtils
   end
 
   def self.showoff_pdf_options(dir = '.')
-    opts = get_config_option(dir, 'pdf_options', {:page_size => 'Letter', :orientation => 'Landscape'})
-    Hash[opts.map {|k, v| [k.to_sym, v]}] # keys must be symbols
+    opts = get_config_option(
+        dir,
+        'pdf_options',
+        { 'page_size' => 'Letter', 'orientation' => 'Landscape' }
+      )
+    # keys must be symbols
+    Hash[ opts.map {|k,v| [ k.to_sym, ( v =~ /^(true)|(false)$/ ? eval( v ) : v ) ] } ]
   end
 
   def self.get_config_option(dir, option, default = nil)
